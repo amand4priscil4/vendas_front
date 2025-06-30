@@ -1,7 +1,5 @@
 // Configuração da API
-const API_BASE_URL = window.location.hostname === 'localhost' 
-  ? 'http://localhost:3000/api' 
-  : 'https://vendas-mercearia.onrender.com'; 
+const API_BASE_URL = 'https://vendas-mercearia.onrender.com/api';
 
 // Estado da aplicação
 let produtos = [];
