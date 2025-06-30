@@ -54,33 +54,61 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 // Configurar event listeners
 function setupEventListeners() {
-    elements.navTabs.forEach(tab => {
-        tab.addEventListener('click', () => switchTab(tab.dataset.tab));
-    });
+    // Navigation
+    if (elements.navTabs) {
+        elements.navTabs.forEach(tab => {
+            tab.addEventListener('click', () => switchTab(tab.dataset.tab));
+        });
+    }
     
-    elements.adicionarProduto.addEventListener('click', adicionarProdutoVenda);
-    elements.finalizarVenda.addEventListener('click', finalizarVenda);
-    elements.limparVenda.addEventListener('click', limparVenda);
-    elements.tipoVenda.addEventListener('change', function() {
-        atualizarPrecos();
-        toggleDataPagamento();
-    });
-    elements.dataPagamento.addEventListener('change', function() {
-        atualizarPrecos();
-    });
+    // Vendas
+    if (elements.adicionarProduto) {
+        elements.adicionarProduto.addEventListener('click', adicionarProdutoVenda);
+    }
+    if (elements.finalizarVenda) {
+        elements.finalizarVenda.addEventListener('click', finalizarVenda);
+    }
+    if (elements.limparVenda) {
+        elements.limparVenda.addEventListener('click', limparVenda);
+    }
+    if (elements.tipoVenda) {
+        elements.tipoVenda.addEventListener('change', function() {
+            atualizarPrecos();
+            toggleDataPagamento();
+        });
+    }
+    if (elements.dataPagamento) {
+        elements.dataPagamento.addEventListener('change', function() {
+            atualizarPrecos();
+        });
+    }
     
-    elements.novoProdutoBtn.addEventListener('click', () => abrirModalProduto());
-    elements.formProduto.addEventListener('submit', salvarProduto);
+    // Produtos
+    if (elements.novoProdutoBtn) {
+        elements.novoProdutoBtn.addEventListener('click', () => abrirModalProduto());
+    }
+    if (elements.formProduto) {
+        elements.formProduto.addEventListener('submit', salvarProduto);
+    }
     
-    elements.novoClienteBtn.addEventListener('click', () => abrirModalCliente());
-    elements.formCliente.addEventListener('submit', salvarCliente);
+    // Clientes
+    if (elements.novoClienteBtn) {
+        elements.novoClienteBtn.addEventListener('click', () => abrirModalCliente());
+    }
+    if (elements.formCliente) {
+        elements.formCliente.addEventListener('submit', salvarCliente);
+    }
     
+    // Modals
     document.querySelectorAll('.close, [data-modal]').forEach(btn => {
         btn.addEventListener('click', (e) => {
             if (e.target.dataset.modal) {
                 fecharModal(e.target.dataset.modal);
             } else {
-                fecharModal(e.target.closest('.modal').id);
+                const modal = e.target.closest('.modal');
+                if (modal) {
+                    fecharModal(modal.id);
+                }
             }
         });
     });
@@ -93,12 +121,16 @@ function setupEventListeners() {
         });
     });
     
-    elements.quantidadeProduto.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') {
-            adicionarProdutoVenda();
-        }
-    });
+    // Enter para adicionar produto
+    if (elements.quantidadeProduto) {
+        elements.quantidadeProduto.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                adicionarProdutoVenda();
+            }
+        });
+    }
     
+    // Verificar conexão
     setInterval(verificarConexao, 30000);
 }
 
@@ -448,6 +480,8 @@ function renderizarVendasRecentes() {
 }
 
 function toggleDataPagamento() {
+    if (!elements.tipoVenda || !elements.dataPagamentoGroup || !elements.dataPagamento) return;
+    
     const tipoVenda = elements.tipoVenda.value;
     const dataPagamentoGroup = elements.dataPagamentoGroup;
     
@@ -520,6 +554,8 @@ function adicionarProdutoVenda() {
 }
 
 function renderizarItensVenda() {
+    if (!elements.itensVenda) return;
+    
     const container = elements.itensVenda;
     
     if (itensVenda.length === 0) {
@@ -528,8 +564,8 @@ function renderizarItensVenda() {
     }
     
     container.innerHTML = itensVenda.map((item, index) => {
-        const tipoVenda = elements.tipoVenda.value;
-        const dataPagamento = elements.dataPagamento.value;
+        const tipoVenda = elements.tipoVenda ? elements.tipoVenda.value : 'normal';
+        const dataPagamento = elements.dataPagamento ? elements.dataPagamento.value : '';
         
         const preco = calcularPrecoVenda(item, tipoVenda, dataPagamento);
         const subtotal = preco * item.quantidade;
@@ -582,8 +618,10 @@ function atualizarPrecos() {
 }
 
 function atualizarTotal() {
+    if (!elements.totalVenda || !elements.tipoVenda) return;
+    
     const tipoVenda = elements.tipoVenda.value;
-    const dataPagamento = elements.dataPagamento.value;
+    const dataPagamento = elements.dataPagamento ? elements.dataPagamento.value : '';
     
     const total = itensVenda.reduce((sum, item) => {
         const preco = calcularPrecoVenda(item, tipoVenda, dataPagamento);
