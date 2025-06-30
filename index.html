@@ -1,318 +1,263 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Sistema de Vendas - Barraca</title>
-
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Vendas - Mercearia</title>
+    
     <!-- PWA Meta Tags -->
-    <meta name="theme-color" content="#2563eb" />
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-    <meta name="apple-mobile-web-app-title" content="Vendas" />
-    <meta
-      name="description"
-      content="Sistema de vendas para mercearia com controle de produtos, clientes e relatórios"
-    />
-
+    <meta name="theme-color" content="#2563eb">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Vendas">
+    <meta name="description" content="Sistema de vendas para mercearia com controle de produtos, clientes e relatórios">
+    
     <!-- PWA Manifest -->
-    <link rel="manifest" href="manifest.json" />
-
+    <link rel="manifest" href="manifest.json">
+    
     <!-- Icons -->
-    <link rel="apple-touch-icon" href="icon-192.png" />
-    <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png" />
-
+    <link rel="apple-touch-icon" href="icon-192.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+    
     <!-- CSS -->
-    <link rel="stylesheet" href="style.css" />
-
+    <link rel="stylesheet" href="style.css">
+    
     <!-- Font Awesome para ícones -->
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-    />
-  </head>
-  <body>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
     <!-- Header -->
     <header class="header">
-      <div class="header-content">
-        <h1><i class="fas fa-store"></i> Sistema de Vendas</h1>
-        <div class="header-actions">
-          <button id="installBtn" class="btn-install" style="display: none">
-            <i class="fas fa-download"></i> Instalar App
-          </button>
-          <div class="status-indicator" id="statusIndicator">
-            <i class="fas fa-circle"></i> Online
-          </div>
+        <div class="header-content">
+            <h1><i class="fas fa-store"></i> Sistema de Vendas</h1>
+            <div class="header-actions">
+                <button id="installBtn" class="btn-install" style="display: none;">
+                    <i class="fas fa-download"></i> Instalar App
+                </button>
+                <div class="status-indicator" id="statusIndicator">
+                    <i class="fas fa-circle"></i> Online
+                </div>
+            </div>
         </div>
-      </div>
     </header>
 
     <!-- Navigation -->
     <nav class="nav-tabs">
-      <button class="nav-tab active" data-tab="vendas">
-        <i class="fas fa-shopping-cart"></i> Vendas
-      </button>
-      <button class="nav-tab" data-tab="produtos"><i class="fas fa-boxes"></i> Produtos</button>
-      <button class="nav-tab" data-tab="clientes"><i class="fas fa-users"></i> Clientes</button>
-      <button class="nav-tab" data-tab="relatorios">
-        <i class="fas fa-chart-bar"></i> Relatórios
-      </button>
+        <button class="nav-tab active" data-tab="vendas">
+            <i class="fas fa-shopping-cart"></i> Vendas
+        </button>
+        <button class="nav-tab" data-tab="produtos">
+            <i class="fas fa-boxes"></i> Produtos
+        </button>
+        <button class="nav-tab" data-tab="clientes">
+            <i class="fas fa-users"></i> Clientes
+        </button>
+        <button class="nav-tab" data-tab="relatorios">
+            <i class="fas fa-chart-bar"></i> Relatórios
+        </button>
     </nav>
 
     <!-- Main Content -->
     <main class="main-content">
-      <!-- Vendas Tab -->
-      <section id="vendas" class="tab-content active">
-        <div class="section-header">
-          <h2><i class="fas fa-shopping-cart"></i> Nova Venda</h2>
-        </div>
-
-        <div class="venda-form">
-          <div class="form-grid">
-            <div class="form-group">
-              <label for="tipoVenda">Tipo de Venda</label>
-              <select id="tipoVenda" class="form-control">
-                <option value="normal">Normal (À vista)</option>
-                <option value="nota">Na Nota (Prazo)</option>
-              </select>
+        
+        <!-- Vendas Tab -->
+        <section id="vendas" class="tab-content active">
+            <div class="section-header">
+                <h2><i class="fas fa-shopping-cart"></i> Nova Venda</h2>
             </div>
-
-            <div class="form-group">
-              <label for="formaPagamento">Forma de Pagamento</label>
-              <select id="formaPagamento" class="form-control">
-                <option value="dinheiro">💰 Dinheiro</option>
-                <option value="cartao">💳 Cartão</option>
-                <option value="pix">📱 PIX</option>
-              </select>
+            
+            <div class="venda-form">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="tipoVenda">Tipo de Venda</label>
+                        <select id="tipoVenda" class="form-control">
+                            <option value="normal">Normal (À vista)</option>
+                            <option value="nota">Na Nota (Prazo)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="formaPagamento">Forma de Pagamento</label>
+                        <select id="formaPagamento" class="form-control">
+                            <option value="dinheiro">💰 Dinheiro</option>
+                            <option value="cartao">💳 Cartão</option>
+                            <option value="pix">📱 PIX</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="clienteVenda">Cliente (Opcional)</label>
+                        <select id="clienteVenda" class="form-control">
+                            <option value="">Selecione um cliente...</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <!-- Produtos da Venda -->
+                <div class="produtos-venda">
+                    <h3>Produtos</h3>
+                    <div class="produto-input">
+                        <select id="produtoSelect" class="form-control">
+                            <option value="">Selecione um produto...</option>
+                        </select>
+                        <input type="number" id="quantidadeProduto" placeholder="Qtd" min="1" class="form-control">
+                        <button type="button" id="adicionarProduto" class="btn btn-primary">
+                            <i class="fas fa-plus"></i> Adicionar
+                        </button>
+                    </div>
+                    
+                    <div class="itens-venda" id="itensVenda">
+                        <!-- Itens serão adicionados aqui -->
+                    </div>
+                    
+                    <div class="total-venda">
+                        <span class="total-label">Total:</span>
+                        <span class="total-valor" id="totalVenda">R$ 0,00</span>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="observacoesVenda">Observações</label>
+                    <textarea id="observacoesVenda" class="form-control" rows="3" placeholder="Observações sobre a venda..."></textarea>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="button" id="finalizarVenda" class="btn btn-success btn-large">
+                        <i class="fas fa-check"></i> Finalizar Venda
+                    </button>
+                    <button type="button" id="limparVenda" class="btn btn-secondary">
+                        <i class="fas fa-eraser"></i> Limpar
+                    </button>
+                </div>
             </div>
-
-            <div class="form-group">
-              <label for="clienteVenda">Cliente (Opcional)</label>
-              <select id="clienteVenda" class="form-control">
-                <option value="">Selecione um cliente...</option>
-              </select>
+            
+            <!-- Lista de Vendas Recentes -->
+            <div class="vendas-recentes">
+                <h3>Vendas Recentes</h3>
+                <div class="vendas-lista" id="vendasLista">
+                    <!-- Vendas serão carregadas aqui -->
+                </div>
             </div>
-          </div>
+        </section>
 
-          <!-- Produtos da Venda -->
-          <div class="produtos-venda">
-            <h3>Produtos</h3>
-            <div class="produto-input">
-              <select id="produtoSelect" class="form-control">
-                <option value="">Selecione um produto...</option>
-              </select>
-              <input
-                type="number"
-                id="quantidadeProduto"
-                placeholder="Qtd"
-                min="1"
-                class="form-control"
-              />
-              <button type="button" id="adicionarProduto" class="btn btn-primary">
-                <i class="fas fa-plus"></i> Adicionar
-              </button>
+        <!-- Produtos Tab -->
+        <section id="produtos" class="tab-content">
+            <div class="section-header">
+                <h2><i class="fas fa-boxes"></i> Produtos</h2>
+                <button class="btn btn-primary" id="novoProdutoBtn">
+                    <i class="fas fa-plus"></i> Novo Produto
+                </button>
             </div>
-
-            <div class="itens-venda" id="itensVenda">
-              <!-- Itens serão adicionados aqui -->
+            
+            <div class="produtos-lista" id="produtosLista">
+                <!-- Produtos serão carregados aqui -->
             </div>
+        </section>
 
-            <div class="total-venda">
-              <span class="total-label">Total:</span>
-              <span class="total-valor" id="totalVenda">R$ 0,00</span>
+        <!-- Clientes Tab -->
+        <section id="clientes" class="tab-content">
+            <div class="section-header">
+                <h2><i class="fas fa-users"></i> Clientes</h2>
+                <button class="btn btn-primary" id="novoClienteBtn">
+                    <i class="fas fa-plus"></i> Novo Cliente
+                </button>
             </div>
-          </div>
+            
+            <div class="clientes-lista" id="clientesLista">
+                <!-- Clientes serão carregados aqui -->
+            </div>
+        </section>
 
-          <div class="form-group">
-            <label for="observacoesVenda">Observações</label>
-            <textarea
-              id="observacoesVenda"
-              class="form-control"
-              rows="3"
-              placeholder="Observações sobre a venda..."
-            ></textarea>
-          </div>
-
-          <div class="form-actions">
-            <button type="button" id="finalizarVenda" class="btn btn-success btn-large">
-              <i class="fas fa-check"></i> Finalizar Venda
-            </button>
-            <button type="button" id="limparVenda" class="btn btn-secondary">
-              <i class="fas fa-eraser"></i> Limpar
-            </button>
-          </div>
-        </div>
-
-        <!-- Lista de Vendas Recentes -->
-        <div class="vendas-recentes">
-          <h3>Vendas Recentes</h3>
-          <div class="vendas-lista" id="vendasLista">
-            <!-- Vendas serão carregadas aqui -->
-          </div>
-        </div>
-      </section>
-
-      <!-- Produtos Tab -->
-      <section id="produtos" class="tab-content">
-        <div class="section-header">
-          <h2><i class="fas fa-boxes"></i> Produtos</h2>
-          <button class="btn btn-primary" id="novoProdutoBtn">
-            <i class="fas fa-plus"></i> Novo Produto
-          </button>
-        </div>
-
-        <div class="produtos-lista" id="produtosLista">
-          <!-- Produtos serão carregados aqui -->
-        </div>
-      </section>
-
-      <!-- Clientes Tab -->
-      <section id="clientes" class="tab-content">
-        <div class="section-header">
-          <h2><i class="fas fa-users"></i> Clientes</h2>
-          <button class="btn btn-primary" id="novoClienteBtn">
-            <i class="fas fa-plus"></i> Novo Cliente
-          </button>
-        </div>
-
-        <div class="clientes-lista" id="clientesLista">
-          <!-- Clientes serão carregados aqui -->
-        </div>
-      </section>
-
-      <!-- Relatórios Tab -->
-      <section id="relatorios" class="tab-content">
-        <div class="section-header">
-          <h2><i class="fas fa-chart-bar"></i> Relatórios</h2>
-        </div>
-
-        <!-- Relatório do Dia -->
-        <div class="relatorio-card">
-          <h3>Relatório do Dia</h3>
-          <div class="relatorio-resumo" id="relatorioDia">
-            <div class="loading">Carregando...</div>
-          </div>
-        </div>
-
-        <!-- Vendas Pendentes -->
-        <div class="relatorio-card">
-          <h3>Vendas Pendentes (Na Nota)</h3>
-          <div class="vendas-pendentes" id="vendasPendentes">
-            <div class="loading">Carregando...</div>
-          </div>
-        </div>
-      </section>
+        <!-- Relatórios Tab -->
+        <section id="relatorios" class="tab-content">
+            <div class="section-header">
+                <h2><i class="fas fa-chart-bar"></i> Relatórios</h2>
+            </div>
+            
+            <!-- Relatório do Dia -->
+            <div class="relatorio-card">
+                <h3>Relatório do Dia</h3>
+                <div class="relatorio-resumo" id="relatorioDia">
+                    <div class="loading">Carregando...</div>
+                </div>
+            </div>
+            
+            <!-- Vendas Pendentes -->
+            <div class="relatorio-card">
+                <h3>Vendas Pendentes (Na Nota)</h3>
+                <div class="vendas-pendentes" id="vendasPendentes">
+                    <div class="loading">Carregando...</div>
+                </div>
+            </div>
+        </section>
     </main>
 
     <!-- Modals -->
-
+    
     <!-- Modal Produto -->
     <div id="modalProduto" class="modal">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h3 id="modalProdutoTitulo">Novo Produto</h3>
-          <span class="close" data-modal="modalProduto">&times;</span>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalProdutoTitulo">Novo Produto</h3>
+                <span class="close" data-modal="modalProduto">&times;</span>
+            </div>
+            <form id="formProduto">
+                <div class="form-group">
+                    <label for="nomeProduto">Nome do Produto</label>
+                    <input type="text" id="nomeProduto" class="form-control" required>
+                </div>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="precoNormal">Preço Normal</label>
+                        <input type="number" id="precoNormal" class="form-control" step="0.01" min="0" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="precoNota">Preço na Nota</label>
+                        <input type="number" id="precoNota" class="form-control" step="0.01" min="0" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="estoqueProduto">Estoque</label>
+                    <input type="number" id="estoqueProduto" class="form-control" min="0" value="0">
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-success">Salvar</button>
+                    <button type="button" class="btn btn-secondary" data-modal="modalProduto">Cancelar</button>
+                </div>
+            </form>
         </div>
-        <form id="formProduto">
-          <div class="form-group">
-            <label for="nomeProduto">Nome do Produto</label>
-            <input type="text" id="nomeProduto" class="form-control" required />
-          </div>
-          <div class="form-grid">
-            <div class="form-group">
-              <label for="precoNormal">Preço Normal</label>
-              <input
-                type="number"
-                id="precoNormal"
-                class="form-control"
-                step="0.01"
-                min="0"
-                required
-              />
-            </div>
-            <div class="form-group">
-              <label for="precoNota">Preço na Nota</label>
-              <input
-                type="number"
-                id="precoNota"
-                class="form-control"
-                step="0.01"
-                min="0"
-                required
-              />
-            </div>
-          </div>
-          <div class="form-group">
-            <label for="estoqueProduto">Estoque</label>
-            <input type="number" id="estoqueProduto" class="form-control" min="0" value="0" />
-          </div>
-          <div class="form-actions">
-            <button type="submit" class="btn btn-success">Salvar</button>
-            <button type="button" class="btn btn-secondary" data-modal="modalProduto">
-              Cancelar
-            </button>
-          </div>
-        </form>
-      </div>
     </div>
 
     <!-- Modal Cliente -->
     <div id="modalCliente" class="modal">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h3 id="modalClienteTitulo">Novo Cliente</h3>
-          <span class="close" data-modal="modalCliente">&times;</span>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalClienteTitulo">Novo Cliente</h3>
+                <span class="close" data-modal="modalCliente">&times;</span>
+            </div>
+            <form id="formCliente">
+                <div class="form-group">
+                    <label for="nomeCliente">Nome do Cliente</label>
+                    <input type="text" id="nomeCliente" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="telefoneCliente">Telefone</label>
+                    <input type="text" id="telefoneCliente" class="form-control" placeholder="(81) 99999-9999">
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-success">Salvar</button>
+                    <button type="button" class="btn btn-secondary" data-modal="modalCliente">Cancelar</button>
+                </div>
+            </form>
         </div>
-        <form id="formCliente">
-          <div class="form-group">
-            <label for="nomeCliente">Nome do Cliente</label>
-            <input type="text" id="nomeCliente" class="form-control" required />
-          </div>
-          <div class="form-grid">
-            <div class="form-group">
-              <label for="cpfCliente">CPF</label>
-              <input
-                type="text"
-                id="cpfCliente"
-                class="form-control"
-                placeholder="000.000.000-00"
-              />
-            </div>
-            <div class="form-group">
-              <label for="telefoneCliente">Telefone</label>
-              <input
-                type="text"
-                id="telefoneCliente"
-                class="form-control"
-                placeholder="(81) 99999-9999"
-              />
-            </div>
-          </div>
-          <div class="form-group">
-            <label for="enderecoCliente">Endereço</label>
-            <textarea
-              id="enderecoCliente"
-              class="form-control"
-              rows="3"
-              placeholder="Rua, número, bairro..."
-            ></textarea>
-          </div>
-          <div class="form-actions">
-            <button type="submit" class="btn btn-success">Salvar</button>
-            <button type="button" class="btn btn-secondary" data-modal="modalCliente">
-              Cancelar
-            </button>
-          </div>
-        </form>
-      </div>
     </div>
 
     <!-- Loading Overlay -->
     <div id="loadingOverlay" class="loading-overlay">
-      <div class="loading-spinner">
-        <i class="fas fa-spinner fa-spin"></i>
-        <p>Carregando...</p>
-      </div>
+        <div class="loading-spinner">
+            <i class="fas fa-spinner fa-spin"></i>
+            <p>Carregando...</p>
+        </div>
     </div>
 
     <!-- Toast Notifications -->
@@ -320,5 +265,5 @@
 
     <!-- Scripts -->
     <script src="script.js"></script>
-  </body>
+</body>
 </html>
