@@ -1,5 +1,7 @@
 // Configuração da API
-const API_BASE_URL = 'https://vendas-mercearia.onrender.com/api';
+const API_BASE_URL = window.location.hostname === 'localhost' 
+  ? 'http://localhost:3000/api' 
+  : 'https://vendas-mercearia.onrender.com/api'; // URL correta do seu backend no Render
 
 // Estado da aplicação
 let produtos = [];
@@ -21,6 +23,8 @@ const elements = {
     
     // Vendas
     tipoVenda: document.getElementById('tipoVenda'),
+    dataPagamento: document.getElementById('dataPagamento'),
+    dataPagamentoGroup: document.getElementById('dataPagamentoGroup'),
     formaPagamento: document.getElementById('formaPagamento'),
     clienteVenda: document.getElementById('clienteVenda'),
     produtoSelect: document.getElementById('produtoSelect'),
@@ -72,7 +76,10 @@ function setupEventListeners() {
     elements.adicionarProduto.addEventListener('click', adicionarProdutoVenda);
     elements.finalizarVenda.addEventListener('click', finalizarVenda);
     elements.limparVenda.addEventListener('click', limparVenda);
-    elements.tipoVenda.addEventListener('change', atualizarPrecos);
+    elements.tipoVenda.addEventListener('change', function() {
+        atualizarPrecos();
+        toggleDataPagamento();
+    });
     
     // Produtos
     elements.novoProdutoBtn.addEventListener('click', () => abrirModalProduto());
@@ -149,6 +156,9 @@ async function apiRequest(endpoint, options = {}) {
     try {
         showLoading(true);
         
+        const fullUrl = `${API_BASE_URL}${endpoint}`;
+        console.log('Fazendo requisição para:', fullUrl); // Debug log
+        
         const config = {
             headers: {
                 'Content-Type': 'application/json',
@@ -156,16 +166,17 @@ async function apiRequest(endpoint, options = {}) {
             ...options
         };
         
-        const response = await fetch(`${API_BASE_URL}${endpoint}`, config);
+        const response = await fetch(fullUrl, config);
         const data = await response.json();
         
         if (!response.ok) {
-            throw new Error(data.error || 'Erro na requisição');
+            throw new Error(data.error || `Erro ${response.status}: ${response.statusText}`);
         }
         
         updateConnectionStatus(true);
         return data;
     } catch (error) {
+        console.error('Erro na API:', error); // Debug log
         updateConnectionStatus(false);
         showToast(error.message, 'error');
         throw error;
@@ -222,10 +233,6 @@ function renderizarProdutos() {
                     <div class="preco-valor">R$ ${produto.preco_nota.toFixed(2)}</div>
                 </div>
             </div>
-            <div class="produto-estoque">
-                <i class="fas fa-boxes"></i>
-                Estoque: ${produto.estoque}
-            </div>
             <div class="card-actions">
                 <button class="btn btn-primary btn-sm" onclick="editarProduto(${produto.id})">
                     <i class="fas fa-edit"></i> Editar
@@ -258,7 +265,6 @@ function abrirModalProduto(produto = null) {
         document.getElementById('nomeProduto').value = produto.nome;
         document.getElementById('precoNormal').value = produto.preco_normal;
         document.getElementById('precoNota').value = produto.preco_nota;
-        document.getElementById('estoqueProduto').value = produto.estoque;
     } else {
         form.reset();
     }
@@ -272,8 +278,7 @@ async function salvarProduto(e) {
     const dados = {
         nome: document.getElementById('nomeProduto').value,
         preco_normal: parseFloat(document.getElementById('precoNormal').value),
-        preco_nota: parseFloat(document.getElementById('precoNota').value),
-        estoque: parseInt(document.getElementById('estoqueProduto').value) || 0
+        preco_nota: parseFloat(document.getElementById('precoNota').value)
     };
     
     try {
