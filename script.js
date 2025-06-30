@@ -13,15 +13,10 @@ let editandoCliente = null;
 
 // Elementos DOM
 const elements = {
-    // Navigation
     navTabs: document.querySelectorAll('.nav-tab'),
     tabContents: document.querySelectorAll('.tab-content'),
-    
-    // Status
     statusIndicator: document.getElementById('statusIndicator'),
     loadingOverlay: document.getElementById('loadingOverlay'),
-    
-    // Vendas
     tipoVenda: document.getElementById('tipoVenda'),
     dataPagamento: document.getElementById('dataPagamento'),
     dataPagamentoGroup: document.getElementById('dataPagamentoGroup'),
@@ -36,24 +31,16 @@ const elements = {
     finalizarVenda: document.getElementById('finalizarVenda'),
     limparVenda: document.getElementById('limparVenda'),
     vendasLista: document.getElementById('vendasLista'),
-    
-    // Produtos
     novoProdutoBtn: document.getElementById('novoProdutoBtn'),
     produtosLista: document.getElementById('produtosLista'),
     modalProduto: document.getElementById('modalProduto'),
     formProduto: document.getElementById('formProduto'),
-    
-    // Clientes
     novoClienteBtn: document.getElementById('novoClienteBtn'),
     clientesLista: document.getElementById('clientesLista'),
     modalCliente: document.getElementById('modalCliente'),
     formCliente: document.getElementById('formCliente'),
-    
-    // Relatórios
     relatorioDia: document.getElementById('relatorioDia'),
     vendasPendentes: document.getElementById('vendasPendentes'),
-    
-    // Toast
     toastContainer: document.getElementById('toastContainer')
 };
 
@@ -67,12 +54,10 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 // Configurar event listeners
 function setupEventListeners() {
-    // Navigation
     elements.navTabs.forEach(tab => {
         tab.addEventListener('click', () => switchTab(tab.dataset.tab));
     });
     
-    // Vendas
     elements.adicionarProduto.addEventListener('click', adicionarProdutoVenda);
     elements.finalizarVenda.addEventListener('click', finalizarVenda);
     elements.limparVenda.addEventListener('click', limparVenda);
@@ -80,16 +65,16 @@ function setupEventListeners() {
         atualizarPrecos();
         toggleDataPagamento();
     });
+    elements.dataPagamento.addEventListener('change', function() {
+        atualizarPrecos();
+    });
     
-    // Produtos
     elements.novoProdutoBtn.addEventListener('click', () => abrirModalProduto());
     elements.formProduto.addEventListener('submit', salvarProduto);
     
-    // Clientes
     elements.novoClienteBtn.addEventListener('click', () => abrirModalCliente());
     elements.formCliente.addEventListener('submit', salvarCliente);
     
-    // Modals
     document.querySelectorAll('.close, [data-modal]').forEach(btn => {
         btn.addEventListener('click', (e) => {
             if (e.target.dataset.modal) {
@@ -100,7 +85,6 @@ function setupEventListeners() {
         });
     });
     
-    // Fechar modal clicando fora
     document.querySelectorAll('.modal').forEach(modal => {
         modal.addEventListener('click', (e) => {
             if (e.target === modal) {
@@ -109,14 +93,12 @@ function setupEventListeners() {
         });
     });
     
-    // Enter para adicionar produto
     elements.quantidadeProduto.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') {
             adicionarProdutoVenda();
         }
     });
     
-    // Verificar conexão
     setInterval(verificarConexao, 30000);
 }
 
@@ -128,7 +110,6 @@ function setupPWA() {
             .catch(err => console.log('Erro no Service Worker:', err));
     }
     
-    // Install prompt
     let deferredPrompt;
     const installBtn = document.getElementById('installBtn');
     
@@ -155,14 +136,11 @@ function setupPWA() {
 async function apiRequest(endpoint, options = {}) {
     try {
         showLoading(true);
-        
         const fullUrl = `${API_BASE_URL}${endpoint}`;
-        console.log('Fazendo requisição para:', fullUrl); // Debug log
+        console.log('Fazendo requisição para:', fullUrl);
         
         const config = {
-            headers: {
-                'Content-Type': 'application/json',
-            },
+            headers: { 'Content-Type': 'application/json' },
             ...options
         };
         
@@ -176,7 +154,7 @@ async function apiRequest(endpoint, options = {}) {
         updateConnectionStatus(true);
         return data;
     } catch (error) {
-        console.error('Erro na API:', error); // Debug log
+        console.error('Erro na API:', error);
         updateConnectionStatus(false);
         showToast(error.message, 'error');
         throw error;
@@ -255,7 +233,6 @@ function atualizarSelectProdutos() {
 
 function abrirModalProduto(produto = null) {
     editandoProduto = produto;
-    const modal = elements.modalProduto;
     const titulo = document.getElementById('modalProdutoTitulo');
     const form = elements.formProduto;
     
@@ -370,7 +347,6 @@ function atualizarSelectClientes() {
 
 function abrirModalCliente(cliente = null) {
     editandoCliente = cliente;
-    const modal = elements.modalCliente;
     const titulo = document.getElementById('modalClienteTitulo');
     const form = elements.formCliente;
     
@@ -471,7 +447,6 @@ function renderizarVendasRecentes() {
     `).join('');
 }
 
-// Função para mostrar/esconder campo de data de pagamento
 function toggleDataPagamento() {
     const tipoVenda = elements.tipoVenda.value;
     const dataPagamentoGroup = elements.dataPagamentoGroup;
@@ -484,7 +459,6 @@ function toggleDataPagamento() {
     }
 }
 
-// Função para calcular se deve usar preço normal ou nota
 function calcularPrecoVenda(produto, tipoVenda, dataPagamento) {
     if (tipoVenda === 'normal') {
         return produto.preco_normal;
@@ -492,7 +466,7 @@ function calcularPrecoVenda(produto, tipoVenda, dataPagamento) {
     
     if (tipoVenda === 'nota') {
         if (!dataPagamento) {
-            return produto.preco_normal; // Sem data = preço normal
+            return produto.preco_normal;
         }
         
         const hoje = new Date();
@@ -500,7 +474,6 @@ function calcularPrecoVenda(produto, tipoVenda, dataPagamento) {
         const diffTime = dataPageto - hoje;
         const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
         
-        // Se for até 10 dias, usar preço normal
         if (diffDays <= 10) {
             return produto.preco_normal;
         } else {
@@ -510,6 +483,8 @@ function calcularPrecoVenda(produto, tipoVenda, dataPagamento) {
     
     return produto.preco_normal;
 }
+
+function adicionarProdutoVenda() {
     const produtoId = parseInt(elements.produtoSelect.value);
     const quantidade = parseInt(elements.quantidadeProduto.value);
     
@@ -524,7 +499,6 @@ function calcularPrecoVenda(produto, tipoVenda, dataPagamento) {
         return;
     }
     
-    // Verificar se produto já está na lista
     const itemExistente = itensVenda.find(item => item.produto_id === produtoId);
     if (itemExistente) {
         itemExistente.quantidade += quantidade;
@@ -541,7 +515,6 @@ function calcularPrecoVenda(produto, tipoVenda, dataPagamento) {
     renderizarItensVenda();
     atualizarTotal();
     
-    // Limpar campos
     elements.produtoSelect.value = '';
     elements.quantidadeProduto.value = '';
 }
@@ -558,7 +531,6 @@ function renderizarItensVenda() {
         const tipoVenda = elements.tipoVenda.value;
         const dataPagamento = elements.dataPagamento.value;
         
-        // Usar a função para calcular o preço correto
         const preco = calcularPrecoVenda(item, tipoVenda, dataPagamento);
         const subtotal = preco * item.quantidade;
         
@@ -604,12 +576,6 @@ function removerItemVenda(index) {
     atualizarTotal();
 }
 
-function removerItemVenda(index) {
-    itensVenda.splice(index, 1);
-    renderizarItensVenda();
-    atualizarTotal();
-}
-
 function atualizarPrecos() {
     renderizarItensVenda();
     atualizarTotal();
@@ -646,7 +612,7 @@ async function finalizarVenda() {
     };
     
     try {
-        const response = await apiRequest('/vendas', {
+        await apiRequest('/vendas', {
             method: 'POST',
             body: JSON.stringify(dadosVenda)
         });
@@ -673,7 +639,7 @@ function limparVenda() {
     elements.clienteVenda.value = '';
     elements.dataPagamento.value = '';
     elements.observacoesVenda.value = '';
-    toggleDataPagamento(); // Esconder campo de data
+    toggleDataPagamento();
     renderizarItensVenda();
     atualizarTotal();
 }
@@ -694,27 +660,27 @@ function renderizarRelatorioDia(relatorio) {
         <div class="relatorio-grid">
             <div class="relatorio-item">
                 <div class="relatorio-valor">R$ ${relatorio.total_dinheiro.toFixed(2)}</div>
-                <div class="relatorio-label">💰 Dinheiro</div>
+                <div class="relatorio-label">Dinheiro</div>
             </div>
             <div class="relatorio-item">
                 <div class="relatorio-valor">R$ ${relatorio.total_cartao.toFixed(2)}</div>
-                <div class="relatorio-label">💳 Cartão</div>
+                <div class="relatorio-label">Cartão</div>
             </div>
             <div class="relatorio-item">
                 <div class="relatorio-valor">R$ ${relatorio.total_pix.toFixed(2)}</div>
-                <div class="relatorio-label">📱 PIX</div>
+                <div class="relatorio-label">PIX</div>
             </div>
             <div class="relatorio-item">
                 <div class="relatorio-valor">R$ ${relatorio.total_geral.toFixed(2)}</div>
-                <div class="relatorio-label">🎯 Total Geral</div>
+                <div class="relatorio-label">Total Geral</div>
             </div>
             <div class="relatorio-item">
                 <div class="relatorio-valor">${relatorio.vendas_normais}</div>
-                <div class="relatorio-label">📋 Vendas Normais</div>
+                <div class="relatorio-label">Vendas Normais</div>
             </div>
             <div class="relatorio-item">
                 <div class="relatorio-valor">${relatorio.vendas_nota}</div>
-                <div class="relatorio-label">📝 Vendas na Nota</div>
+                <div class="relatorio-label">Vendas na Nota</div>
             </div>
         </div>
     `;
@@ -764,17 +730,14 @@ function renderizarVendasPendentes(data) {
 
 // Utility Functions
 function switchTab(tabName) {
-    // Atualizar nav tabs
     elements.navTabs.forEach(tab => {
         tab.classList.toggle('active', tab.dataset.tab === tabName);
     });
     
-    // Atualizar content
     elements.tabContents.forEach(content => {
         content.classList.toggle('active', content.id === tabName);
     });
     
-    // Carregar dados específicos da tab
     if (tabName === 'relatorios') {
         carregarRelatorioDia();
         carregarVendasPendentes();
@@ -792,7 +755,6 @@ function fecharModal(modalId) {
     modal.classList.remove('active');
     document.body.style.overflow = '';
     
-    // Reset form if exists
     const form = modal.querySelector('form');
     if (form) {
         form.reset();
@@ -835,9 +797,9 @@ function getToastIcon(type) {
 
 function formatarFormaPagamento(forma) {
     const formas = {
-        dinheiro: '💰 Dinheiro',
-        cartao: '💳 Cartão',
-        pix: '📱 PIX'
+        dinheiro: 'Dinheiro',
+        cartao: 'Cartão',
+        pix: 'PIX'
     };
     return formas[forma] || forma;
 }
