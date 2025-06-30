@@ -1,5 +1,7 @@
 // Configuração da API
-const API_BASE_URL = 'https://vendas-mercearia.onrender.com/api';
+const API_BASE_URL = window.location.hostname === 'localhost' 
+  ? 'http://localhost:3000/api' 
+  : 'https://vendas-mercearia.onrender.com/api';
 
 // Estado da aplicação
 let produtos = [];
@@ -594,6 +596,12 @@ function renderizarItensVenda() {
             </div>
         `;
     }).join('');
+}
+
+function removerItemVenda(index) {
+    itensVenda.splice(index, 1);
+    renderizarItensVenda();
+    atualizarTotal();
 }
 
 function removerItemVenda(index) {
