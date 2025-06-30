@@ -1,0 +1,34 @@
+{
+  "name": "vendas-mercearia-frontend",
+  "version": "1.0.0",
+  "description": "Frontend PWA do sistema de vendas para mercearia",
+  "main": "index.html",
+  "scripts": {
+    "dev": "python -m http.server 8080",
+    "serve": "npx serve . -p 8080",
+    "build": "echo 'Frontend is ready for deployment'",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "serve": "^14.2.1"
+  },
+  "keywords": [
+    "pwa",
+    "mercearia",
+    "vendas",
+    "frontend",
+    "javascript",
+    "html",
+    "css"
+  ],
+  "author": "Seu Nome",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/amand4priscil4/vendas_front.git"
+  },
+  "homepage": "https://github.com/amand4priscil4/vendas_front#readme",
+  "engines": {
+    "node": ">=16.0.0"
+  }
+}
