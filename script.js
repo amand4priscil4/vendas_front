@@ -471,7 +471,45 @@ function renderizarVendasRecentes() {
     `).join('');
 }
 
-function adicionarProdutoVenda() {
+// Função para mostrar/esconder campo de data de pagamento
+function toggleDataPagamento() {
+    const tipoVenda = elements.tipoVenda.value;
+    const dataPagamentoGroup = elements.dataPagamentoGroup;
+    
+    if (tipoVenda === 'nota') {
+        dataPagamentoGroup.style.display = 'block';
+    } else {
+        dataPagamentoGroup.style.display = 'none';
+        elements.dataPagamento.value = '';
+    }
+}
+
+// Função para calcular se deve usar preço normal ou nota
+function calcularPrecoVenda(produto, tipoVenda, dataPagamento) {
+    if (tipoVenda === 'normal') {
+        return produto.preco_normal;
+    }
+    
+    if (tipoVenda === 'nota') {
+        if (!dataPagamento) {
+            return produto.preco_normal; // Sem data = preço normal
+        }
+        
+        const hoje = new Date();
+        const dataPageto = new Date(dataPagamento);
+        const diffTime = dataPageto - hoje;
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        
+        // Se for até 10 dias, usar preço normal
+        if (diffDays <= 10) {
+            return produto.preco_normal;
+        } else {
+            return produto.preco_nota;
+        }
+    }
+    
+    return produto.preco_normal;
+}
     const produtoId = parseInt(elements.produtoSelect.value);
     const quantidade = parseInt(elements.quantidadeProduto.value);
     
@@ -518,16 +556,37 @@ function renderizarItensVenda() {
     
     container.innerHTML = itensVenda.map((item, index) => {
         const tipoVenda = elements.tipoVenda.value;
-        const preco = tipoVenda === 'nota' ? item.preco_nota : item.preco_normal;
+        const dataPagamento = elements.dataPagamento.value;
+        
+        // Usar a função para calcular o preço correto
+        const preco = calcularPrecoVenda(item, tipoVenda, dataPagamento);
         const subtotal = preco * item.quantidade;
+        
+        let precoInfo = '';
+        if (tipoVenda === 'nota') {
+            if (!dataPagamento) {
+                precoInfo = '(Preço Normal - sem data)';
+            } else {
+                const hoje = new Date();
+                const dataPageto = new Date(dataPagamento);
+                const diffDays = Math.ceil((dataPageto - hoje) / (1000 * 60 * 60 * 24));
+                
+                if (diffDays <= 10) {
+                    precoInfo = `(Preço Normal - ${diffDays} dias)`;
+                } else {
+                    precoInfo = `(Preço Nota - ${diffDays} dias)`;
+                }
+            }
+        } else {
+            precoInfo = '(Preço Normal)';
+        }
         
         return `
             <div class="item-venda">
                 <div class="item-info">
                     <div class="item-nome">${item.produto_nome}</div>
                     <div class="item-detalhes">
-                        ${item.quantidade}x R$ ${preco.toFixed(2)} 
-                        ${tipoVenda === 'nota' ? '(Preço Nota)' : '(Preço Normal)'}
+                        ${item.quantidade}x R$ ${preco.toFixed(2)} ${precoInfo}
                     </div>
                 </div>
                 <div class="item-valor">R$ ${subtotal.toFixed(2)}</div>
@@ -552,8 +611,10 @@ function atualizarPrecos() {
 
 function atualizarTotal() {
     const tipoVenda = elements.tipoVenda.value;
+    const dataPagamento = elements.dataPagamento.value;
+    
     const total = itensVenda.reduce((sum, item) => {
-        const preco = tipoVenda === 'nota' ? item.preco_nota : item.preco_normal;
+        const preco = calcularPrecoVenda(item, tipoVenda, dataPagamento);
         return sum + (preco * item.quantidade);
     }, 0);
     
@@ -570,6 +631,7 @@ async function finalizarVenda() {
         cliente_id: parseInt(elements.clienteVenda.value) || null,
         tipo_venda: elements.tipoVenda.value,
         forma_pagamento: elements.formaPagamento.value,
+        data_pagamento: elements.dataPagamento.value || null,
         itens: itensVenda.map(item => ({
             produto_id: item.produto_id,
             quantidade: item.quantidade
@@ -603,7 +665,9 @@ function limparVenda() {
     elements.tipoVenda.value = 'normal';
     elements.formaPagamento.value = 'dinheiro';
     elements.clienteVenda.value = '';
+    elements.dataPagamento.value = '';
     elements.observacoesVenda.value = '';
+    toggleDataPagamento(); // Esconder campo de data
     renderizarItensVenda();
     atualizarTotal();
 }
