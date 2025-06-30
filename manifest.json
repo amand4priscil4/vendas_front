@@ -20,7 +20,7 @@
       "form_factor": "narrow"
     },
     {
-      "src": "screenshot-desktop.png",
+      "src": "screenshot-desktop.png", 
       "sizes": "1280x720",
       "type": "image/png",
       "form_factor": "wide"
@@ -28,51 +28,15 @@
   ],
   "icons": [
     {
-      "src": "icon-72.png",
-      "sizes": "72x72",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "icon-96.png",
-      "sizes": "96x96",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "icon-128.png",
-      "sizes": "128x128",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "icon-144.png",
-      "sizes": "144x144",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "icon-152.png",
-      "sizes": "152x152",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "icon-192.png",
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%232563eb'/><text y='70' x='50' text-anchor='middle' fill='white' font-size='60' font-family='Arial'>V</text></svg>",
       "sizes": "192x192",
-      "type": "image/png",
+      "type": "image/svg+xml",
       "purpose": "any maskable"
     },
     {
-      "src": "icon-384.png",
-      "sizes": "384x384",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "icon-512.png",
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%232563eb'/><text y='70' x='50' text-anchor='middle' fill='white' font-size='60' font-family='Arial'>V</text></svg>",
       "sizes": "512x512",
-      "type": "image/png",
+      "type": "image/svg+xml",
       "purpose": "any maskable"
     }
   ],
@@ -81,38 +45,24 @@
       "name": "Nova Venda",
       "short_name": "Venda",
       "description": "Registrar uma nova venda",
-      "url": "/?tab=vendas",
-      "icons": [
-        {
-          "src": "icon-192.png",
-          "sizes": "192x192"
-        }
-      ]
+      "url": "/?tab=vendas"
     },
     {
       "name": "Produtos",
-      "short_name": "Produtos",
+      "short_name": "Produtos", 
       "description": "Gerenciar produtos",
-      "url": "/?tab=produtos",
-      "icons": [
-        {
-          "src": "icon-192.png",
-          "sizes": "192x192"
-        }
-      ]
+      "url": "/?tab=produtos"
     },
     {
       "name": "Relatórios",
       "short_name": "Relatórios",
       "description": "Ver relatórios de vendas",
-      "url": "/?tab=relatorios",
-      "icons": [
-        {
-          "src": "icon-192.png",
-          "sizes": "192x192"
-        }
-      ]
+      "url": "/?tab=relatorios"
     }
   ],
-  "features": ["offline", "push-notifications", "installable"]
+  "features": [
+    "offline",
+    "push-notifications",
+    "installable"
+  ]
 }
